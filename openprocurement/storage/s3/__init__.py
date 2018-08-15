@@ -28,6 +28,11 @@ def includeme(config):
             s3_settings['is_secure'] = False
         connection = S3Connection(**s3_settings)
         bucket_name = settings['s3.bucket']
+
+        buckets_name = [b.name for b in connection.get_all_buckets()]
+        if bucket_name not in buckets_name:
+            connection.create_bucket(bucket_name)
+
         config.registry.storage = S3Storage(connection, bucket_name)
     else:
         raise
