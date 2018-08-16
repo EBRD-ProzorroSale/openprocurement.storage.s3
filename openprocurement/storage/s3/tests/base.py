@@ -3,6 +3,7 @@ from boto.utils import compute_md5
 from boto.utils import find_matching_headers
 from boto.utils import merge_headers_by_name
 from hashlib import md5
+from mock import patch
 import boto
 import copy
 import os
@@ -244,8 +245,9 @@ class BaseWebTest(unittest.TestCase):
 
     It setups the database before each test and delete it after.
     """
-
-    def setUp(self):
+    @patch('openprocurement.storage.s3.S3Connection')
+    def setUp(self, mock_connection):
+        mock_connection = MockConnection
         self.app = webtest.TestApp(
             "config:tests.ini", relative_to=os.path.dirname(__file__))
         self.app.authorization = ('Basic', ('broker', 'broker'))
