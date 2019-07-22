@@ -26,7 +26,7 @@ def includeme(config):
 
         if 's3.is_secure' in settings and not settings['s3.is_secure']:
             s3_settings['is_secure'] = False
-        s3_settings['calling_format'] = OrdinaryCallingFormat()
+
         connection = S3Connection(**s3_settings)
         bucket_name = settings['s3.bucket']
 
